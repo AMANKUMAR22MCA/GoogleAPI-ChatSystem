@@ -105,9 +105,6 @@ python manage.py runserver
 
 ### WebSocket Endpoint:
 
-```sh
-ws://localhost:8000/ws/chat/<room_name>/
-```
 
 ### Chat API Endpoints
 
