@@ -38,8 +38,8 @@ A Django project integrating Google APIs (OAuth, Drive, Picker), Django REST Fra
 
 ### 1️⃣ Clone the Repository
 ```sh
-git clone https://github.com/AMANKUMAR22MCA/GoogleAPI-WebsocketChatSystem.git
-cd GoogleAPI-WebsocketChatSystem
+git clone https://github.com/AMANKUMAR22MCA/GoogleAPI-ChatSystem.git
+cd GoogleAPI-ChatSystem
 ```
 
 ### 2️⃣ Create & Activate Virtual Environment
