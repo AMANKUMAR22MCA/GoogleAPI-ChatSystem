@@ -5,7 +5,7 @@ A Django project integrating Google APIs (OAuth, Drive, Picker), Django REST Fra
 ---
 Video Walkthrough:
 
-## 🚀 Watch Demo on YouTube  : https://www.youtube.com/watch?v=5GKIs813jxQ
+## 🚀 Watch Demo on YouTube  : https://youtu.be/wCInOy7G3bQ?si=F5gRlWMyRLT4FBBF
 
 ---
 
@@ -23,8 +23,8 @@ Video Walkthrough:
 
 ### 1️⃣ Clone the Repository
 ```sh
-git clone https://github.com/AMANKUMAR22MCA/Google_Apis.git
-cd Google_Apis
+git clone https://github.com/AMANKUMAR22MCA/GoogleAPI-WebsocketChatSystem.git
+cd GoogleAPI-WebsocketChatSystem
 ```
 
 ### 2️⃣ Create & Activate Virtual Environment
@@ -51,6 +51,10 @@ pip install -r requirements.txt
 4. Create OAuth 2.0 Credentials:
    - Go to **Credentials** → **Create Credentials** → **OAuth Client ID**
    - Select "Web Application" as the application type
+   - Authorised JavaScript origins
+     ```
+     http://localhost:8000
+     ```
    - Add the following authorized redirect URIs:
      ```
      http://localhost:8000/auth/callback/
@@ -59,8 +63,8 @@ pip install -r requirements.txt
    - Save and get your **Client ID** and **Client Secret**
 
 ### 5️⃣ Setup Environment Variables (.env file)
-Create a `.env` file in the project root and configure:
-```sh
+Add the values for the varibales declared in settins.py file ,  api_app/index.html , api_app/ views.py
+```
 SECRET_KEY=your_django_secret_key
 DEBUG=True
 GOOGLE_CLIENT_ID=your_google_client_id
@@ -73,8 +77,19 @@ GOOGLE_REDIRECT_URI=http://localhost:8000/auth/callback/
 python manage.py migrate
 python manage.py createsuperuser
 ```
+### 7️⃣ Google Sign-In Setup
 
-### 7️⃣ Start the Development Server
+1. Go to **Django Admin Panel**: [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/).
+2. Add Domain Name and Display Name in Sites [ http://127.0.0.1:8000 ] .
+3. Navigate to **Social Applications** under **Social Accounts**.
+4. Click **Add Social Application** and configure as follows:
+   - **Provider**: Google
+   - **Name**: Google Sign In
+   - **Client ID**: *(Paste from Google Console)*
+   - **Secret Key**: *(Paste from Google Console)*
+   - **Sites**: Select your site (`example.com` or `127.0.0.1`).
+   
+### 8️⃣ Start the Development Server
 ```sh
 python manage.py runserver
 ```
@@ -150,9 +165,27 @@ ws://localhost:8000/ws/chat/<room_name>/
 ---
 
 ## 📸 Screenshots
-![image](https://github.com/user-attachments/assets/bf848fd7-18f7-41d2-9ea5-bb37840a46c4)
+## Google Login 
 
+![postman1- google  authentication](https://github.com/user-attachments/assets/7edf2d7b-f299-4051-9f8a-26bf87020a48) <br>
+## File Upload in Drive
 
+![postman google drive upload](https://github.com/user-attachments/assets/7007d6cf-8a4d-4ef6-8d9b-db712bee79fa) <br>
+## Google Login Callback Response
+
+![json received](https://github.com/user-attachments/assets/deb8f2e6-b399-44f2-b809-7c4b06cf4ef9) <br>
+## Google Picker 
+
+![select google picker](https://github.com/user-attachments/assets/d4c0858e-76c2-4054-adbc-3a78c1d161d2) <br>
+## Google Drive Call Back Response
+
+![google drive login](https://github.com/user-attachments/assets/d299d701-bc2a-4c63-8a6d-3e69be12912c) <br>
+
+![google authenticate](https://github.com/user-attachments/assets/7ec44cf0-20c4-4ab2-9b01-3061f5240c7a) <br>
+
+![down file from drive](https://github.com/user-attachments/assets/d73e870b-c107-4948-9178-5440d281073e) <br>
+
+![chat rrom](https://github.com/user-attachments/assets/35dee01d-cf28-4680-aed2-87a075823841)<br>
 
 
 ## 🤝 Contributing
@@ -166,5 +199,3 @@ Contributions are welcome! Feel free to submit issues or pull requests.
 For any queries, reach out to:
 - 🌐 **GitHub:** https://github.com/AMANKUMAR22MCA
 
-"# GoogleAPI-CatSystem" 
-"# GoogleAPI-ChatSystem" 
