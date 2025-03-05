@@ -20,7 +20,7 @@ A Django project integrating Google APIs (OAuth, Drive, Picker), Django REST Fra
 ## 🌍 Deployment Details
 
 - **Remote Database:** Aiven PostgreSQL
-- **Deployment:** Google Cloud Artifact Registry
+- **Deployment:** Google Cloud Artifact Registry + Google Cloud Run
 
 ---
 
