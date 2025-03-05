@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Google Drive Picker & Uploader</title>
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <style>
+      #jsonOutput {
+        background-color: #f4f4f4;
+        padding: 10px;
+        border-radius: 5px;
+        white-space: pre-wrap;
+      }
+      .upload-section {
+        margin: 20px 0;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      .progress-bar {
+        width: 100%;
+        background-color: #f0f0f0;
+        padding: 3px;
+        border-radius: 3px;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+        margin: 10px 0;
+      }
+      .progress-bar-fill {
+        display: block;
+        height: 22px;
+        background-color: #659cef;
+        border-radius: 3px;
+        transition: width 500ms ease-in-out;
+        text-align: center;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Google Drive Picker & Uploader</h1>
+    <button onclick="loadPicker()">Open Drive Picker</button>
+
+    <div class="upload-section">
+      <h2>Upload Files to Drive</h2>
+      <input type="file" id="fileInput" multiple />
+      <button onclick="uploadFiles()">Upload Selected Files</button>
+      <div id="uploadProgress"></div>
+    </div>
+
+    <div id="result"></div>
+    <h3>JSON Output:</h3>
+    <pre id="jsonOutput"></pre>
+
+    <script>
+      const CLIENT_ID =
+        "CLIENT_ID";
+      const API_KEY = "API_KEY";
+      const APP_ID = "APP_ID";
+      const SCOPE = "https://www.googleapis.com/auth/drive.file";
+      let tokenClient;
+      let pickerInited = false;
+      let gisInited = false;
+      let accessToken = "";
+
+      // Initialize Google API Client
+      async function initClient() {
+        try {
+          await gapi.client.init({
+            apiKey: API_KEY,
+            discoveryDocs: [
+              "https://www.googleapis.com/discovery/v1/apis/drive/v3/rest",
+            ],
+          });
+          console.log("✅ Google API client initialized");
+        } catch (error) {
+          console.error("❌ Error initializing Google API client:", error);
+        }
+      }
+
+      // Initialize Picker
+      function initializePicker() {
+        pickerInited = true;
+        console.log("✅ Google Picker initialized");
+      }
+
+      // Initialize Google Identity Services
+      function loadGis() {
+        tokenClient = google.accounts.oauth2.initTokenClient({
+          client_id: CLIENT_ID,
+          scope: SCOPE,
+          callback: (response) => {
+            if (response.error) {
+              console.error("❌ OAuth Error:", response);
+              return;
+            }
+            accessToken = response.access_token;
+            console.log("✅ Access Token Received:", accessToken);
+            createPicker(accessToken);
+          },
+        });
+        gisInited = true;
+        console.log("✅ Google OAuth initialized");
+      }
+
+      // Initialize on page load
+      document.addEventListener("DOMContentLoaded", () => {
+        gapi.load("client", async () => {
+          await initClient();
+          gapi.load("picker", initializePicker);
+          loadGis();
+        });
+      });
+
+      // Load Picker
+      function loadPicker() {
+        if (!pickerInited || !gisInited) {
+          console.error("❌ Picker not initialized yet!");
+          return;
+        }
+        console.log("🔄 Requesting access token...");
+        tokenClient.requestAccessToken({ prompt: "consent" });
+      }
+
+      // Create Picker
+      function createPicker(token) {
+        if (!token) {
+          console.error("❌ Missing Access Token!");
+          return;
+        }
+
+        try {
+          const view = new google.picker.View(google.picker.ViewId.DOCS);
+          const picker = new google.picker.PickerBuilder()
+            .enableFeature(google.picker.Feature.NAV_HIDDEN)
+            .enableFeature(google.picker.Feature.MULTISELECT_ENABLED)
+            .setAppId(APP_ID)
+            .setOAuthToken(token)
+            .addView(view)
+            .addView(new google.picker.DocsUploadView())
+            .setDeveloperKey(API_KEY)
+            .setCallback(pickerCallback)
+            .build();
+
+          picker.setVisible(true);
+          console.log("✅ Google Picker opened");
+        } catch (error) {
+          console.error("❌ Error creating Picker:", error);
+        }
+      }
+
+      // Picker Callback
+      function pickerCallback(data) {
+        if (
+          data[google.picker.Response.ACTION] === google.picker.Action.PICKED
+        ) {
+          const documents = data[google.picker.Response.DOCUMENTS];
+          const fileDetails = documents.map((doc) => ({
+            id: doc[google.picker.Document.ID],
+            name: doc[google.picker.Document.NAME],
+            url: doc[google.picker.Document.URL],
+            mimeType: doc[google.picker.Document.MIME_TYPE],
+            iconUrl: doc[google.picker.Document.ICON_URL],
+            thumbnailUrl: doc[google.picker.Document.THUMBNAIL_URL],
+          }));
+
+          document.getElementById("jsonOutput").textContent = JSON.stringify(
+            fileDetails,
+            null,
+            2
+          );
+
+          document.getElementById("result").innerHTML = documents
+            .map(
+              (doc) => `
+                    <div>
+                        <h3>${doc[google.picker.Document.NAME]}</h3>
+                        <p>ID: ${doc[google.picker.Document.ID]}</p>
+                        <p>URL: <a href="${
+                          doc[google.picker.Document.URL]
+                        }" target="_blank">Download File</a></p>
+                    </div>
+                `
+            )
+            .join("");
+
+          console.log("✅ Selected Files:", fileDetails);
+        }
+      }
+
+      // File Upload Functions
+      async function uploadFiles() {
+        const fileInput = document.getElementById("fileInput");
+        const files = fileInput.files;
+
+        if (files.length === 0) {
+          alert("Please select files to upload");
+          return;
+        }
+
+        if (!accessToken) {
+          tokenClient.requestAccessToken({ prompt: "consent" });
+          return;
+        }
+
+        // Clear previous progress bars
+        document.getElementById("uploadProgress").innerHTML = "";
+
+        for (let i = 0; i < files.length; i++) {
+          await uploadFile(files[i]);
+        }
+      }
+
+      async function uploadFile(file) {
+        const metadata = {
+          name: file.name,
+          mimeType: file.type,
+        };
+
+        try {
+          // Create progress bar
+          const progressDiv = document.getElementById("uploadProgress");
+          const progressContainer = document.createElement("div");
+          progressContainer.innerHTML = `
+                    <p>${file.name}</p>
+                    <div class="progress-bar">
+                        <span class="progress-bar-fill" style="width: 0%">0%</span>
+                    </div>
+                `;
+          progressDiv.appendChild(progressContainer);
+          const progressBarFill =
+            progressContainer.querySelector(".progress-bar-fill");
+
+          // Create resumable upload session
+          const response = await fetch(
+            "https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable",
+            {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(metadata),
+            }
+          );
+
+          const locationUrl = response.headers.get("Location");
+
+          // Upload file with progress tracking
+          const uploadResponse = await fetch(locationUrl, {
+            method: "PUT",
+            headers: {
+              "Content-Type": file.type,
+            },
+            body: file,
+          });
+
+          if (uploadResponse.ok) {
+            const result = await uploadResponse.json();
+            console.log(`✅ File uploaded successfully:`, result);
+
+            // Update progress bar
+            progressBarFill.style.width = "100%";
+            progressBarFill.textContent = "100%";
+
+            // Update JSON output
+            const currentOutput =
+              document.getElementById("jsonOutput").textContent;
+            const currentData = currentOutput ? JSON.parse(currentOutput) : [];
+            currentData.push({
+              id: result.id,
+              name: result.name,
+              mimeType: result.mimeType,
+              webViewLink: result.webViewLink,
+              webContentLink: result.webContentLink,
+            });
+            document.getElementById("jsonOutput").textContent = JSON.stringify(
+              currentData,
+              null,
+              2
+            );
+          } else {
+            throw new Error("Upload failed");
+          }
+        } catch (error) {
+          console.error(`❌ Error uploading file:`, error);
+          alert(`Failed to upload ${file.name}`);
+        }
+      }
+    </script>
+  </body>
+</html>
