@@ -76,17 +76,15 @@ python manage.py createsuperuser
 python manage.py runserver
 ```
 
+
 ---
 
-## 📂 Google Drive API Endpoints
+## 🔑 Google OAuth Authentication Endpoints
 
 | Method | Endpoint | Description |
-|--------|--------------------------------|--------------------------------------|
-| GET    | `/google-drive/auth/`        | Redirects user to Google OAuth for Drive permissions |
-| GET    | `/google-drive/callback/`    | Handles Google Drive OAuth callback |
-| POST   | `/google-drive/upload/`      | Uploads a file to Google Drive |
-| GET    | `/google-drive/files/`       | Lists all files from Google Drive |
-| GET    | `/google-drive/download/<file_id>/` | Downloads a file from Google Drive |
+|--------|------------------------|----------------------------------|
+| GET    | `/auth/google/login/`  | Initiates Google OAuth login    |
+| GET    | `/auth/callback/`      | Handles OAuth callback & retrieves access token |
 
 ---
 
@@ -105,17 +103,33 @@ python manage.py runserver
 - Messages are stored in the database
 - WebSocket-based real-time communication
 
+### WebSocket Endpoint:
+
+```sh
+ws://localhost:8000/ws/chat/<room_name>/
+```
 
 ### Chat API Endpoints
 
-| Method | Endpoint | Description |
-|--------|---------------------|--------------------------------|
-| GET    | `/chat/`            | User selection page          |
-| POST   | `/chat/`            | Authenticate user & login    |
-| GET    | `/chat/room/`       | Chat page with messages      |
+| Method | Endpoint      | Description               |
+|--------|------------- |------------------------- |
+| GET    | `/chat/`      | User selection page       |
+| POST   | `/chat/`      | Authenticate user & login |
+| GET    | `/chat/room/` | Chat page with messages   |
 
 ---
 
+## 📂 Google Drive API Endpoints
+
+| Method | Endpoint | Description |
+|--------|--------------------------------|--------------------------------------|
+| GET    | `/google-drive/auth/`        | Redirects user to Google OAuth for Drive permissions |
+| GET    | `/google-drive/callback/`    | Handles Google Drive OAuth callback |
+| POST   | `/google-drive/upload/`      | Uploads a file to Google Drive |
+| GET    | `/google-drive/files/`       | Lists all files from Google Drive |
+| GET    | `/google-drive/download/<file_id>/` | Downloads a file from Google Drive |
+
+---
 ## 🛠 Technologies Used
 
 - **Django** (Backend Framework)
