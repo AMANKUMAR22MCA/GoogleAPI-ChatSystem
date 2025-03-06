@@ -56,6 +56,31 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
+### 4️⃣ Setup Google API Credentials
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project (or use an existing one)
+3. Enable the following APIs:
+   - Google Drive API
+   - Google Picker API
+   - Google OAuth 2.0
+4. Create OAuth 2.0 Credentials:
+   - Go to **Credentials** → **Create Credentials** → **OAuth Client ID**
+   - Select "Web Application" as the application type
+   - Authorised JavaScript origins
+     ```
+     http://localhost:8000
+     ```
+   - Add the following authorized redirect URIs  [Example]:
+     ```
+     http://localhost:8000/example/callback/
+     http://localhost:8000/example/drive/callback/
+     ```
+   - Save and get your **Client ID** and **Client Secret**
+
+### 5️⃣ Setup Environment Variables (.env file)
+Add the values for the varibales declared in settins.py file ,  api_app/index.html , api_app/ views.py
+```
+
 ### 4️⃣ Setup Environment Variables (.env file)
 ```
 SECRET_KEY=your_django_secret_key
