@@ -79,7 +79,7 @@ pip install -r requirements.txt
 
 ### 5️⃣ Setup Environment Variables (.env file)
 ```
-- Add the values for the varibales declared in settins.py file ,  api_app/index.html , api_app/ views.py
+- Add the values for the varibales declared in settins.py file ,  api_app/index.html 
 ```
 
 ### 6️⃣ Setup Environment Variables 
