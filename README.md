@@ -78,10 +78,10 @@ pip install -r requirements.txt
    - Save and get your **Client ID** and **Client Secret**
 
 ### 5️⃣ Setup Environment Variables (.env file)
-Add the values for the varibales declared in settins.py file ,  api_app/index.html , api_app/ views.py
+- Add the values for the varibales declared in settins.py file ,  api_app/index.html , api_app/ views.py
 ```
 
-### 4️⃣ Setup Environment Variables (.env file)
+### 6️⃣ Setup Environment Variables 
 ```
 SECRET_KEY=your_django_secret_key
 DEBUG=True
@@ -90,13 +90,23 @@ GOOGLE_CLIENT_SECRET=your_google_client_secret
 GOOGLE_REDIRECT_URI=your google redirect url
 ```
 
-### 5️⃣ Run Migrations & Create Superuser
+### 7️⃣ Run Migrations & Create Superuser
 ```sh
 python manage.py migrate
 python manage.py createsuperuser
 ```
+### 8️⃣ Google Sign-In Setup
 
-### 6️⃣ Start the Development Server
+1. Go to **Django Admin Panel**: [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/).
+2. Add Domain Name and Display Name in Sites [ http://127.0.0.1:8000 ] .
+3. Navigate to **Social Applications** under **Social Accounts**.
+4. Click **Add Social Application** and configure as follows:
+   - **Provider**: Google
+   - **Name**: Google Sign In
+   - **Client ID**: *(Paste from Google Console)*
+   - **Secret Key**: *(Paste from Google Console)*
+   - **Sites**: Select your site (`example.com` or `127.0.0.1`).
+###  Start the Development Server
 ```sh
 python manage.py runserver
 ```
