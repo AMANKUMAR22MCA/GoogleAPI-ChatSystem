@@ -6,7 +6,7 @@ A Django project integrating Google APIs (OAuth, Drive, Picker), Django REST Fra
 
 ## 🔗 Important Links
 
-- **🎥 Watch Demo on YouTube:** [YouTube Link](https://youtube.com)
+- **🎥 Watch Demo on YouTube:** [YouTube Link](https://youtu.be/QCFrPA_6Wzs?si=LUrMqalPRrlEAfkv)
 - **🌍 Deployed APIs:**
   - **Google Login:** https://google-oauth-project-316971717795.asia-south1.run.app/auth/google/login/
   - **Google Picker:** https://google-oauth-project-316971717795.asia-south1.run.app/google/picker/
