@@ -8,7 +8,7 @@ A Django project integrating Google APIs (OAuth, Drive, Picker), Django REST Fra
 
 - **🎥 Watch Demo on YouTube:** [YouTube Link](https://youtu.be/QCFrPA_6Wzs?si=LUrMqalPRrlEAfkv)
 - **🌍 Deployed APIs:**
-  - **Google Login:** https://google-oauth-project-316971717795.asia-south1.run.app/users/
+  - **Google Login:** https://google-oauth-project-316971717795.asia-south1.run.app/user/login/
   - **Google Picker:** https://google-oauth-project-316971717795.asia-south1.run.app/google/picker/
   - **Real-Time Chat System:** https://google-oauth-project-316971717795.asia-south1.run.app/chat/
 - **📌 Note:** The Google Drive Picker is currently restricted to test users because the app is in **Testing mode** and has not yet completed Google’s verification process. To gain access, please share your email so we can add you as a test user.
